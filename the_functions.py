@@ -135,3 +135,6 @@ def total(a=5, *numbers, **phonebook):
 
 print(total(10, 1, 2, 3, Jack=1123, John=2231, Inge=1560))
 
+def test ():
+    pass
+test()
