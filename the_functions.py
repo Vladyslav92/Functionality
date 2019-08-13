@@ -135,3 +135,38 @@ def total(a=5, *numbers, **phonebook):
 
 print(total(10, 1, 2, 3, Jack=1123, John=2231, Inge=1560))
 
+# Перевод числа с двоичной в десятеричную
+def bin_to_dec(digit):
+    dlina = len(digit)
+    print(dlina)
+    chislo_dec = 0
+    for i in range(0, dlina):
+        chislo_dec = chislo_dec + int(digit[i]) * (2 ** (dlina - i - 1))
+    return chislo_dec
+
+# еще вариант из любой в любую
+def convert_base(num, to_base=10, from_base=10):
+    # first convert to decimal number
+    if isinstance(num, str):
+        n = int(num, from_base)
+    else:
+        n = int(num)
+    # now convert decimal to 'to_base' base
+    alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    if n < to_base:
+        return alphabet[n]
+    else:
+        return convert_base(n // to_base, to_base) + alphabet[n % to_base]
+
+
+convert_base('AA16342F', from_base=16, to_base=8)  # '25205432057'
+convert_base('111', from_base=2)  # 7
+convert_base(33, to_base=16)  # 21
+convert_base(33333, to_base=20)  # '436D'
+convert_base(3333333, to_base=20)  # '10GD6D'
+# print(
+#    convert_base(input("Введите число: "),
+#    from_base=int(input("Из какой системы вычисляем: ")),
+#    to_base=int(input("В какую систему переводим: ")))
+# )
+
