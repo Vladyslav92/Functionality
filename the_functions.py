@@ -208,3 +208,43 @@ convert_base(3333333, to_base=20)  # '10GD6D'
 #    from_base=int(input("Из какой системы вычисляем: ")),
 #    to_base=int(input("В какую систему переводим: ")))
 # )
+
+# ---------------------------------------------------------------------
+# Шифр Цезаря
+
+# First variant
+def code_cesar(text, key):
+    new_word = []
+    new_letter = ''
+    for i in text:
+        if 65 <= ord(i) <= 90:
+            new_letter = chr((((ord(i) - 65) + key) % 26) + 65)
+            new_word.append(new_letter)
+        elif 97 <= ord(i) <= 122:
+            new_letter = chr((((ord(i) - 97) + key) % 26) + 97)
+            new_word.append(new_letter)
+        else:
+            new_word.append(i)
+            # print(i)
+    return ''.join(new_word)
+
+
+first = input("Введите сообщение: ").lower()
+second = int(input("Введите сдвиг: "))
+print(code_cesar(first, second))
+
+# Seocnd variant
+message = input("Введите сообщение: ").lower()
+offset = int(input("Введите сдвиг: "))
+encoded_message = ""
+alphabet = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+for ch in message:
+    position = alphabet.find(ch)
+    newPosition = position + offset
+    if ch in alphabet:
+        encoded_message = encoded_message + alphabet[newPosition]
+    else:
+        encoded_message = encoded_message + ch
+
+print(encoded_message)
+# -----------------------------------------------------------------------
