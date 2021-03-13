@@ -248,3 +248,49 @@ for ch in message:
 
 print(encoded_message)
 # -----------------------------------------------------------------------
+'''
+Напишите два двойных цикла.
+В первом цикле while мы постоянно запрашиваем целое число,
+а во втором, с помощью цикла for считаем сумму чисел от 0 до введенного числа.
+Выход из первого цикла осуществляем если ввели число 0.
+'''
+
+# Variant - 1
+num = int(input("Введите целое число (0 для выхода): "))
+summ = 0
+while num != 0:
+    for i in range(0, num + 1):
+        summ += i
+    print(summ)
+    num = int(input("Введите целое число (0 для выхода): "))
+    break
+
+# Variant - 2
+num2 = int(input("Введите целое число (0 для выхода): "))
+summ2 = 0
+while num2 != 0:
+    counter = 0
+    while counter <= num2:
+        summ2 += counter
+        counter += 1
+    print(summ2)
+    num2 = int(input("Введите целое число (0 для выхода): "))
+
+# Создание пароля
+import random
+
+
+def create_pass(length):
+    alpha = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM`!@#$%^&*()_-+{}[]|:;?/><.,'
+    password = ''
+    for _ in range(length):
+        password += random.choice(alpha)
+
+    return password
+
+
+base = []
+for _ in range(8000000000):
+    base.append(create_pass(5))
+print(set(base))
+print(len(base))
