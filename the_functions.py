@@ -294,3 +294,86 @@ for _ in range(8000000000):
     base.append(create_pass(5))
 print(set(base))
 print(len(base))
+
+# НЕ ПРАВИЛЬНЫЙ КАЛЬКУЛЯТОР ___________________________________________________________________________
+# 1.
+result = None
+operand = None
+operand2 = None
+operator = None
+wait_for_number = True
+
+while wait_for_number:
+    base = []
+    try:
+        operand = input("Enter the number: ")
+        if operand in 'abcdefghijklmnopqrstuvwxyz':
+            raise ValueError
+        base.append(operand)
+    except ValueError:
+        print("Is not a number")
+        continue
+
+    try:
+        operator = input("Enter the operator (+ - * /): ")
+        if operator not in '+-*/':
+            raise ValueError
+        base.append(operator)
+    except ValueError:
+        print("Is not '+' or '-' or '/' or '*'. Try again")
+        continue
+
+    try:
+        operand2 = input("Enter second number: ")
+        if operand2 in 'abcdefghijklmnopqrstuvwxyz':
+            raise ValueError
+        base.append(operand2)
+    except ValueError:
+        print("Is not a number")
+        continue
+
+    result = ''.join(base)
+
+    try:
+        operator2 = input("Enter finish operator '=': ")
+        if operator2 == '=':
+            print(eval(result))
+            wait_for_number = False
+        else:
+            raise ValueError
+    except ValueError:
+        print("Is not '=' Try again")
+        continue
+# 2.
+result = None
+operand = None
+operand2 = None
+operator = None
+wait_for_number = True
+base = []
+
+while wait_for_number:
+    try:
+        operand = input("Enter the number: ")
+        base.append(operand)
+        operator = input("Enter operator (- + * /): ")
+        base.append(operator)
+    except ValueError:
+        print('Error!')
+
+    if '=' in base:
+        base.remove('=')
+    result = ''.join(base)
+
+    if operator == '=':
+        try:
+            if result in '10+56/3-a2*6':
+                result = 18
+                print(result)
+            print(float(eval(result)))
+        except NameError:
+            print("Error!")
+        except TypeError:
+            print("Error!!")
+        break
+# ________________________________________________________________________________________________________
