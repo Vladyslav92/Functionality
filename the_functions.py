@@ -203,6 +203,8 @@ convert_base('111', from_base=2)  # 7
 convert_base(33, to_base=16)  # 21
 convert_base(33333, to_base=20)  # '436D'
 convert_base(3333333, to_base=20)  # '10GD6D'
+
+
 # print(
 #    convert_base(input("Введите число: "),
 #    from_base=int(input("Из какой системы вычисляем: ")),
@@ -377,3 +379,252 @@ while wait_for_number:
             print("Error!!")
         break
 # ________________________________________________________________________________________________________
+enter_string = input("Enter your string: ")
+
+
+def normalize(string):
+    alphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+    for x in string:
+        if x in alphabet:
+            string = string.replace(x, '_')
+    return string
+
+
+print(normalize(enter_string))
+
+
+# _________________________________________________________________________________________________________
+def fibonacci(number):
+    if number == 0:
+        return 0
+    elif len(base) == number:
+        return base[number - 1]
+    else:
+        if len(base) < 2:
+            base.append(1)
+            base.append(1)
+        result = base[-1] + base[-2]
+        base.append(result)
+        return fibonacci(number)
+
+
+def main():
+    n = int(input("Enter the number (maximum - 998): "))
+    return fibonacci(n)
+
+
+if __name__ == '__main__':
+    base = []
+    print(main())
+
+
+# Еще вариант
+
+def fibonacci(n):
+    if n == 0:
+        print(0)
+    elif n < 2:
+        print(1)
+    else:
+        f1 = f2 = 1
+        print(0, f1, f2, end=' ')
+        i = 2
+        while i < n:
+            f1, f2 = f2, f1 + f2
+            print(f2, end=' ')
+            i += 1
+
+
+fibonacci(4)
+# __________________________________________________________________________________________________________
+import os
+
+
+# Разобрать файлы и папки в пути
+
+
+def sort_files(paths):
+    for values in os.listdir(paths):
+        if os.path.isdir(paths + '/' + values):
+            sort_files(paths + '/' + values)
+        else:
+            if values.endswith(base_photo[0]):
+                base_photo.append(values)
+            elif values.endswith(base_video[0]):
+                base_video.append(values)
+            elif values.endswith(base_documents[0]):
+                base_documents.append(values)
+            elif values.endswith(base_music[0]):
+                base_music.append(values)
+            elif values.endswith(base_archives[0]):
+                base_archives.append(values)
+            else:
+                base_unknoun.append(values)
+
+
+def main():
+    path = r'C:/Users/Владыка/Desktop/Разобрать'
+    return sort_files(path)
+
+
+if __name__ == '__main__':
+    base_photo = [('jpg', 'jpeg', 'png', 'svg')]
+    base_video = [('avi', 'mp4', 'mov', 'mkv')]
+    base_documents = [('doc', 'docx', 'txt', 'pdf', 'xlsx', 'pptx')]
+    base_music = [('mp3', 'ogg', 'wav', 'amr')]
+    base_archives = [('zip', 'gz', 'tar')]
+    base_unknoun = []
+    main()
+    print(f'Photos:\n {base_photo[1:-1]}\nVideos:\n {base_video[1:-1]}\nDocuments:\n {base_documents[1:-1]}\n'
+          f'Music:\n {base_music[1:-1]}\nArchives:\n {base_archives[1:-1]}\nUnknoun:\n {base_unknoun}')
+# ___________________________________________________________________________________________________________
+# Создать строку, вставить запятые и перед повледним ингридиентом поставить (и)
+# яйца 2шт, сахар 1 л., соль 1 чл. и уксус
+test = ['яйца 2шт', 'сахар 1 л.', 'соль 1 чл.', 'уксус']
+
+
+def format_ingredients(items):
+    new_items = []
+    if len(items) < 2:
+        result = ''.join(items)
+        return result
+    elif len(items) == 0:
+        return 'Empty list of ingredients'
+    else:
+        for i in items[0:-2]:
+            i += ', '
+            new_items.append(i)
+        item = items[-2] + ' и ' + items[-1]
+        new_items.append(item)
+        result = ''.join(new_items)
+    return result
+
+
+print(format_ingredients(test))
+
+
+# _______________________________________________________________________________________________________________
+def lookup_key(data, value):
+    base = []
+    try:
+        for key, val in data.items():
+            if val == value:
+                base.append(key)
+    except AttributeError:
+        return base
+    return base
+
+
+test2 = []
+test = {1: 'susanna', 2: 'superman', 3: 'ashley', 4: 'jack', 5: 'superman'}
+print(lookup_key(test, 'superman'))
+
+
+# _______________________________________________________________________________________________________________
+
+def split_list(grade):
+    middle_or_less = []
+    more_then_middle = []
+    middle_value = sum(grade) // max(len(grade), 1)
+    for i in grade:
+        if i <= middle_value:
+            middle_or_less.append(i)
+        elif i > middle_value:
+            more_then_middle.append(i)
+        else:
+            return middle_or_less, more_then_middle
+    if len(grade) == 0:
+        return middle_or_less, more_then_middle
+    else:
+        return middle_or_less, more_then_middle
+
+
+test = [10, 25, 33, 44]
+test2 = []
+test3 = [50, 10]
+test4 = [5]
+test5 = [1, 12, 3, 24, 5]
+print(split_list(test))
+# _______________________________________________________________________________________________________________
+from random import randint
+
+
+def get_random_password():
+    base = [chr(randint(40, 126)) for _ in range(8)]
+    pas = ''.join(base)
+    return pas
+
+
+print(get_random_password())
+print(chr(40))
+# _______________________________________________________________________________________________________________
+from random import randint
+
+
+# Используя решения из предыдущих двух задач напишите функцию get_password,
+# которая сгенерирует нам случайный надежный пароль и вернет его. Алгоритм простой,
+# мы генерируем пароль с помощью функции get_random_password
+# и если он проходит надежность проверкой функцией is_valid_password возвращаем его, если нет повторяем итерацию снова.
+# Примечание: Хорошей практикой будет ограничить количество попыток (например до 100),
+# чтобы не получить бесконечный цикл.
+
+
+def get_random_password():
+    result = ""
+    count = 0
+    while count < 8:
+        random_symbol = chr(randint(40, 126))
+        result = result + random_symbol
+        count = count + 1
+    return result
+
+
+def is_valid_password(password):
+    has_upper = False
+    has_lower = False
+    has_num = False
+    for ch in password:
+        if "A" <= ch <= "Z":
+            has_upper = True
+        elif "a" <= ch <= "z":
+            has_lower = True
+        elif "0" <= ch <= "9":
+            has_num = True
+    if len(password) == 8 and has_upper and has_lower and has_num:
+        return True
+    return False
+
+
+def get_password():
+    counter = 0
+    while counter <= 100:
+        if is_valid_password(get_random_password()):
+            return get_random_password()
+        else:
+            is_valid_password(get_random_password())
+
+
+print(get_password())
+# _____________________________________________________________________________________________________________
+from pathlib import Path
+
+
+# Напишите функцию parse_folder, она принимает единственный параметр path,
+# который является объектом Path. Функция должна просканировать директорию path
+# и вернуть кортеж из двух списков. Первый это список файлов внутри директории, второй список директорий.
+
+
+def parse_folder(path):
+    files = []
+    folders = []
+    for i in path.iterdir():
+        if i.is_dir():
+            folders.append(i.name)
+        elif i.is_file():
+            files.append(i.name)
+    return files, folders
+
+
+test = Path('Путь....')
+print(parse_folder(test))
+# _____________________________________________________________________________________________________________
