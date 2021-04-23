@@ -628,3 +628,295 @@ def parse_folder(path):
 test = Path('Путь....')
 print(parse_folder(test))
 # _____________________________________________________________________________________________________________
+import re
+
+
+def find_word(text, word):
+    base = {
+        'result': 0,
+        'first_index': 0,
+        'last_index': 0,
+        'search_string': 0,
+        'string': 0
+    }
+    find_first_index = re.search(word, text)
+    if word in text:
+        result = True
+        base['result'] = result
+        base['first_index'] = find_first_index.span()[0]
+        base['last_index'] = find_first_index.span()[-1]
+        base['search_string'] = find_first_index.group()
+        base['string'] = text
+    else:
+        result = False
+        base['result'] = result
+        base['search_string'] = word
+        base['first_index'] = None
+        base['last_index'] = None
+        base['string'] = text
+    return base
+
+
+print(find_word("Guido van Rossum began working on Python in the late 1980s, as a successor to the ABC"
+                " programming language, and first released it in 1991 as Python 0.9.0.", "Python"))
+# _______________________________________________________________________________________________________________
+articles_dict = [
+    {
+        "title": "Minim voluptate eu aliqua duis pariatur cupidatat voluptate.",
+        "author": "Jhon Stark",
+        "year": 2019,
+    },
+    {
+        "title": "Dolore Lorem aliquip est labore elit labore ex consequat ad occaecat duis.",
+        "author": "Artur Clark",
+        "year": 2020,
+    },
+    {
+        "title": "Aliqua minim amet ut pariatur et occaecat esse qui commodo ut duis sunt elit.",
+        "author": "Silver Name",
+        "year": 2021,
+    },
+    {
+        "title": "Irure reprehenderit aliquip officia quis occaecat aute mollit laborum ullamco laboris Lorem commodo.",
+        "author": "Golden Gun",
+        "year": 2021,
+    },
+]
+
+
+def find_articles(key, letter_case=False):
+    base = []
+    for dicts in articles_dict:
+        for items in dicts.items():
+            for item in items:
+                try:
+                    if key in item:
+                        base.append(dicts)
+                except TypeError:
+                    continue
+    return base
+
+
+print(find_articles('elit'))
+# __________________________________________________________________________________________________________________
+test = "    +38(050)123-32-34"
+test1 = "     0503451234"
+test3 = "(050)8889900"
+test4 = "38050-111-22-22"
+test5 = "38050 111 22 11   "
+
+
+def sanitize_phone_number(phone):
+    base = []
+    for i in phone:
+        if i in ' -()+':
+            continue
+        base.append(i)
+    real_string = ''.join(base)
+    return real_string
+
+
+print(sanitize_phone_number(test))
+
+
+# Еще вариант
+def sanitize_phone_number2(phone):
+    new_phone = (
+        phone.strip()
+            .removeprefix("+")
+            .replace("(", "")
+            .replace(")", "")
+            .replace("-", "")
+            .replace(" ", "")
+    )
+    return new_phone
+
+
+print(sanitize_phone_number2(test))
+# ___________________________________________________________________________________________________________
+def sanitize_phone_number(phone):
+    new_phone = (
+        phone.strip()
+        .removeprefix("+")
+        .replace("(", "")
+        .replace(")", "")
+        .replace("-", "")
+        .replace(" ", "")
+    )
+    return new_phone
+
+
+def get_phone_numbers_for_countries(list_phones):
+    ua, jp, tw, sg = [], [], [], []
+    countries = {'UA': [], 'JP': [], 'TW': [], 'SG': []}
+    base = []
+    for j in list_phones:
+        base.append(sanitize_phone_number(j))
+    for i in base:
+        if i[0:2] == '81':
+            jp.append(i)
+        elif i[0:2] == '65':
+            sg.append(i)
+        elif i[0:3] == '886':
+            tw.append(i)
+        elif i[0:3] == '380':
+            ua.append(i)
+        else:
+            ua.append(i)
+    countries.update({'UA': ua, 'JP': jp, 'TW': tw, 'SG': sg})
+
+    return countries
+
+
+test = ["    +38(050)123-32-34", "     0503451234", "(050)8889900", "38050-111-22-22", "38050 111 22 11   ",
+        "    +81(050)123-32-34", "     0653451234", "(886)8889900", "65050-111-22-22", "81050 111 22 11   "]
+print(get_phone_numbers_for_countries(test))
+# ______________________________________________________________________________________________________________
+def is_spam_words(text, spam_words, space_around=False):
+    if not space_around:
+        for i in spam_words:
+            if i in text:
+                return True
+            else:
+                return False
+    else:
+        return False
+
+
+print(is_spam_words("Молох", ["лох"]))  # True
+print(is_spam_words("Молох", ["лох"], True))  # False
+# ____________________________________________________________________________________
+CYRILLIC_SYMBOLS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ"
+TRANSLATION = ("a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
+               "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "u", "ja", "je", "ji", "g")
+TRANS = {}
+for c, l in zip(CYRILLIC_SYMBOLS, TRANSLATION):
+    TRANS[ord(c)] = l
+    TRANS[ord(c.upper())] = l.upper()
+
+
+def translate(name):
+    for i, j in TRANS.items():
+        i = chr(i)
+        name = name.replace(i, j)
+    return name
+
+
+print(translate("Дмитрий Коробов"))  # Dmitrij Korobov
+print(translate("Александр Иванович"))  # Aleksandr Ivanovich
+
+# ЕЩЕ ВАРИАНТ
+TRANS2 = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z',
+          'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r',
+          'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch',
+          'ъ': 'y', 'ы': 'y', 'ь': "'", 'э': 'e', 'ю': 'yu', 'я': 'ya',
+
+          'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo', 'Ж': 'Zh', 'З': 'Z',
+          'И': 'I', 'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O', 'П': 'P', 'Р': 'R',
+          'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F', 'Х': 'H', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Shch',
+          'Ъ': 'Y', 'Ы': 'Y', 'Ь': "'", 'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya',
+          }
+
+
+def translate2(name):
+    for i, j in TRANS2.items():
+        name = name.replace(i, j)
+    return name
+
+
+print(translate2("Дмитрий Коробов"))  # Dmitrij Korobov
+print(translate2("Александр Иванович"))  # Aleksandr Ivanovich
+# _______________________________________________________________________________________________________________
+grade = {"A": 5, "B": 5, "C": 4, "D": 3, "E": 3, "FX": 2, "F": 1}
+
+
+def formatted_grades(students):
+    base = []
+    count = 0
+    for v in students.items():
+        count += 1
+        name, val = v
+        for k, i in grade.items():
+            if k == val:
+                base.append("{:>4}|{:<10}|{:^5}|{:^5}".format(count, name, val, i))
+    return base
+
+
+people = {"Nick": "A", "Olga": "B", "Mike": "FX", "Anna": "C"}
+
+print(formatted_grades(people))
+
+# ЕЩЕ ВАРИАНТ (КРАСИВЫЙ ВЫВОД)
+grade2 = {"A": 5, "B": 5, "C": 4, "D": 3, "E": 3, "FX": 2, "F": 1}
+
+
+def formatted_grades2(students):
+    count = 0
+    for v in students.items():
+        count += 1
+        name, val = v
+        for k, i in grade2.items():
+            if k == val:
+                print("{:>4}|{:<10}|{:^5}|{:^5}".format(count, name, val, i))
+
+
+people2 = {"Nick": "A", "Olga": "B", "Mike": "FX", "Anna": "C"}
+formatted_grades2(people2)
+# _____________________________________________________________________________________________________________
+def formatted_numbers():
+    num_list = []
+    count = 0
+    num_list.append("|{:^10}|{:^10}|{:^10}|".format("decimal", "hex", "binary"))
+    for i in range(16):
+        hex_count = '{:x}'.format(count)
+        bin_count = '{:b}'.format(count)
+        num_list.append("|{:<10}|{:^10}|{:>10}|".format(count, hex_count, bin_count))
+        count += 1
+    return num_list
+
+
+for el in formatted_numbers():
+    print(el)
+# _________________________________________________________________________________________________
+import re
+
+
+def find_all_words(text, word):
+    result = re.findall(word, text, re.IGNORECASE)
+    return result
+
+
+print(find_all_words("Guido PythoN van Rossum began working on Python in the late 1980s, as a successor to the ABC"
+                     " programming language pYthon, and first released it PytHOn in 1991 as Python 0.9.0.", "Python"))
+# _________________________________________________________________________________________________________________
+import re
+
+
+def replace_spam_words(text, spam_words):
+    base = []
+    result = ""
+    for i in spam_words:
+        stopper = re.findall(i, text, re.IGNORECASE)
+        for x in stopper:
+            base.append(x)
+    base = "(" + "" + "|".join(base) + ")"
+    for j in spam_words:
+        result = re.sub(base, '*' * len(j), text)
+    return result
+
+
+print(replace_spam_words('Guido van Rossum began working on Python in the late 1980s, as a successor to the ABC'
+                         ' programming PYTHOn language, and first released pYthoN it in 1991 as Python 0.9.0. pythOn',
+                         ['began', 'Python']))
+# ___________________________________________________________________________________________________________________
+import re
+
+
+def find_all_links(text):
+    result = []
+    pattern = r"https?://(\w+\.)+\w+"
+    iterator = re.finditer(pattern, text)
+    for match in iterator:
+        result.append(match.group())
+    return result
+# __________________________________________________________________________________
