@@ -920,3 +920,311 @@ def find_all_links(text):
         result.append(match.group())
     return result
 # __________________________________________________________________________________
+# Скрипт заходит в указанную папку с файлами, создает папки и сортирует файлы по папкам, архивы распаковывает
+# содержимое архивов распаковывается в папку созданую по имени архива. Все файлы транслитерируются.
+# Файлы с неизвесными расширениями остаются без изменений
+import os
+import shutil
+
+
+def unpack_archives(paths):
+    for arch in os.listdir(os.path.join(paths, 'archives')):
+        archiv = 'archives'
+        try:
+            os.mkdir(f'{os.path.join(paths, archiv)}/{os.path.splitext(arch)[0]}')
+            shutil.unpack_archive(os.path.join(os.path.join(paths, 'archives'), arch),
+                                  os.path.join(os.path.join(paths, 'archives'), os.path.splitext(arch)[0]))
+        except (FileExistsError, shutil.ReadError):
+            continue
+
+
+def normalize(name):
+    trans = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z',
+             'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r',
+             'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch',
+             'ъ': 'y', 'ы': 'y', 'ь': "'", 'э': 'e', 'ю': 'yu', 'я': 'ya', '`': '_', '~': '_', '!': '_',
+             '@': '_', '#': '_', '$': '_', '%': '_', '^': '_', '&': '_', '*': '_', '(': '_', ')': '_',
+             '-': '_', '=': '_', '+': '_', '{': '_', '}': '_', '[': '_', ']': '_', ';': '_', ':': '_', '|': '_',
+             '"': '_', '/': '_', '?': '_', '>': '_', '<': '_', ',': '_',
+
+             'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo', 'Ж': 'Zh', 'З': 'Z',
+             'И': 'I', 'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O', 'П': 'P', 'Р': 'R',
+             'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F', 'Х': 'H', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Shch',
+             'Ъ': 'Y', 'Ы': 'Y', 'Ь': "'", 'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya',
+             }
+    for i, j in trans.items():
+        name = name.replace(i, j)
+    return name
+
+
+def del_empty_normalize_dirs(root_path, cur_path):
+    for filename in os.listdir(cur_path):
+        if os.path.isfile(os.path.join(cur_path, filename)):
+            shutil.move(os.path.join(cur_path, filename), os.path.join(root_path, filename))
+        elif os.path.isdir(os.path.join(cur_path, filename)):
+            del_empty_normalize_dirs(root_path, os.path.join(cur_path, filename))
+    if cur_path != root_path:
+        os.rmdir(cur_path)
+    normalize_files(root_path)
+
+
+def normalize_files(path):
+    for file in os.listdir(path):
+        shutil.move(os.path.join(path, file), os.path.join(path, normalize(file)))
+    sort_unpack_files(path)
+
+
+def sort_unpack_files(root_path):
+    for file in os.listdir(root_path):
+        if file.endswith(base[0]):
+            try:
+                os.mkdir(f'{root_path}/photo')
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'photo'))
+            except FileExistsError:
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'photo'))
+        elif file.endswith(base[1]):
+            try:
+                os.mkdir(f'{root_path}/video')
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'video'))
+            except FileExistsError:
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'video'))
+        elif file.endswith(base[2]):
+            try:
+                os.mkdir(f'{root_path}/documents')
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'documents'))
+            except FileExistsError:
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'documents'))
+        elif file.endswith(base[3]):
+            try:
+                os.mkdir(f'{root_path}/music')
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'music'))
+            except FileExistsError:
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'music'))
+        elif file.endswith(base[4]):
+            try:
+                os.mkdir(f'{root_path}/archives')
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'archives'))
+            except FileExistsError:
+                shutil.move(os.path.join(root_path, file), os.path.join(root_path, 'archives'))
+    unpack_archives(root_path)
+
+
+def main():
+    path = r'C:/Users/Владыка/Desktop/Разобрать'
+    flag = r'C:/Users/Владыка/Desktop/Разобрать'
+    return del_empty_normalize_dirs(path, flag)
+
+
+if __name__ == '__main__':
+    base = [('jpg', 'jpeg', 'png', 'svg'), ('avi', 'mp4', 'mov', 'mkv'), ('doc', 'docx', 'txt', 'pdf', 'xlsx', 'pptx'),
+            ('mp3', 'ogg', 'wav', 'amr'), ('zip', 'gz', 'tar')]
+    main()
+# _________________________________________________________________________________________________________________
+import re
+
+
+def read_file(path):
+    with open(path, 'r') as file:
+        result = list(map(int, re.findall(r'\d+', ''.join(file.readlines()))))
+    return sum(result)
+
+
+# должен быть создан текстовый файл с словами и цифрами
+test = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
+print(read_file(test))
+# ________________________________________________________________________________________
+def write_and_get_employees(employee_list, path):
+    base = []
+    with open(path, 'w') as write_file:
+        for elements in employee_list:
+            if elements == list(elements):
+                for elem in elements:
+                    write_file.write(elem + '\n')
+            else:
+                write_file.write(elements + '\n')
+    with open(path, 'r') as read_file:
+        read_file = read_file.readlines()
+        for line in read_file:
+            base.append(line)
+    return base
+
+
+test = [['Robert Stivenson, 28 years', 'Alex Denver, 30 years'], ['Drake Mikelsson, 19 years']]
+test2 = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
+print(write_and_get_employees(test, test2))
+
+
+# ЕЩЕ ВАРИАНТ (УПОРОТЫЙ)
+def write_and_get_employees(employee_list, path):
+    base = []
+    write_file = open(path, 'w')
+    for elements in employee_list:
+        if elements == list(elements):
+            for elem in elements:
+                write_file.write(elem + '\n')
+        else:
+            write_file.write(elements + '\n')
+    write_file.close()
+    read_file = open(path, 'r')
+    for line in read_file:
+        base.append(line)
+    read_file.close()
+    return base
+
+
+test3 = [['Robert Stivenson, 28 years', 'Alex Denver, 30 years'], ['Drake Mikelsson, 19 years']]
+test4 = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
+print(write_and_get_employees(test3, test4))
+# ________________________________________________________________________________________________
+import re
+
+
+def add_order(order, path):
+    base = []
+    count = 0
+    with open(path, 'a') as write_file:
+        write_file.write(order + '\n')
+    with open(path, 'r') as read_file:
+        for line in read_file:
+            base.append(line)
+    for element in base:
+        if re.search(r'\b:active\b', element):
+            count += 1
+    return count
+
+
+test = 'Big chicken:active'
+way = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
+print(add_order(test, way))
+
+
+# ЕЩЕ ВАРИАНТ (УПОРОТЫЙ)
+def add_order(order, path):
+    base = []
+    count = 0
+    write_file = open(path, 'a')
+    write_file.write(order + '\n')
+    write_file.close()
+    read_file = open(path, 'r')
+    for line in read_file:
+        base.append(line)
+    for element in base:
+        if re.search(r'\b:active\b', element):
+            count += 1
+    read_file.close()
+    return count
+
+
+test2 = 'Big chicken:active'
+way2 = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
+print(add_order(test2, way2))
+# ___________________________________________________________________________________________
+def navigate_clients(path, code):
+    base = ''
+    file = open(path, 'r')
+    file.seek(9)
+    base = base + file.readline()
+    file.close()
+    return base
+
+
+test = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
+test1 = 9
+# print(navigate_clients(test, test1))
+
+
+# Еще Вариант
+def navigate_clients2(path, code):
+    base = []
+    result = ''
+    file = open(path, 'r')
+    for j in file:
+        base.append(j)
+    file.close()
+    for elem in base:
+        for i in elem:
+            if i not in '1234567890\n.':
+                result = result + i
+    result = result.lstrip(' ')
+    return result
+
+
+test2 = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
+test3 = 9
+print(navigate_clients2(test2, test3))
+# ________________________________________________________________________________________________________
+import re
+
+
+def get_ingredients(path, position_name):
+    base = []
+    result = []
+    with open(path, 'r') as file:
+        for line in file:
+            base.append(line)
+        for elem in base:
+            if re.search(r'\b{}\b'.format(position_name), elem):
+                result = elem.split(':')
+                result = result[1].rstrip('\n').split(',')
+    return result
+
+
+test = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
+test2 = 'Big chicken4'
+print(get_ingredients(test, test2))
+# ________________________________________________________________________________________
+def encode_password(password):
+    base = []
+    for i in password.encode():
+        i = hex(i)
+        base.append(i)
+    return base
+
+
+test = 'hardpassword123'
+print(encode_password(test))
+# ________________________________________________________
+def is_equal(utf_8_pass, utf_16_pass):
+    utf_8_pass, utf_16_pass = utf_8_pass.decode('utf-8', 'ignore'), utf_16_pass.decode('utf-16', 'ignore')
+    return utf_8_pass == utf_16_pass
+
+
+test = 'Привет!'
+test = test.encode()
+print(is_equal(test, test))
+
+
+# ЕЩЕ ВАРИАНТ
+def is_equal2(utf_8_pass, utf_16_pass):
+    utf_8_pass, utf_16_pass = utf_8_pass.decode('utf-8', 'ignore'), utf_16_pass.decode('utf-16', 'ignore')
+    return utf_8_pass.casefold() == utf_16_pass.casefold()
+
+
+test2 = 'Привет!'
+test2 = test2.encode()
+print(is_equal2(test2, test2))
+# _________________________________________________________________________
+def write_to_bin(path, user_info):
+    base = []
+    with open(path, 'wb') as file:
+        for items in user_info.items():
+            for item in items:
+                if item == items[0]:
+                    file.write(items[0].encode())
+                    file.write(':'.encode())
+                elif item == items[-1]:
+                    file.write(items[-1].encode())
+                    file.write('\n'.encode())
+    with open(path, 'rb') as file2:
+        # for i in file2:
+        for i in file2.readlines():
+            base.append(i.replace('\n'.encode(), ''.encode()).decode('utf-8', 'ignore'))
+            #  base.append(i.decode('utf-8', 'ignore').replace('\n', '')
+    return base
+
+
+test = {'Andreiev': 'uyro18890D', 'Stivenson': 'oppjM13LL9e'}
+test1 = 'C:/Users/Владыка/PycharmProjects/Functionality/money.bin'
+print(write_to_bin(test1, test))
+# _____________________________________________________________________________________
+
