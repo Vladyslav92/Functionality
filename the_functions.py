@@ -1226,5 +1226,4 @@ def write_to_bin(path, user_info):
 test = {'Andreiev': 'uyro18890D', 'Stivenson': 'oppjM13LL9e'}
 test1 = 'C:/Users/Владыка/PycharmProjects/Functionality/money.bin'
 print(write_to_bin(test1, test))
-# _____________________________________________________________________________________
-
+# ____________________________________________________________________________________________
