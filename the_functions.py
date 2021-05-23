@@ -734,6 +734,8 @@ def sanitize_phone_number2(phone):
 
 print(sanitize_phone_number2(test))
 # ___________________________________________________________________________________________________________
+
+
 def sanitize_phone_number(phone):
     new_phone = (
         phone.strip()
@@ -772,6 +774,8 @@ test = ["    +38(050)123-32-34", "     0503451234", "(050)8889900", "38050-111-2
         "    +81(050)123-32-34", "     0653451234", "(886)8889900", "65050-111-22-22", "81050 111 22 11   "]
 print(get_phone_numbers_for_countries(test))
 # ______________________________________________________________________________________________________________
+
+
 def is_spam_words(text, spam_words, space_around=False):
     if not space_around:
         for i in spam_words:
@@ -863,6 +867,8 @@ def formatted_grades2(students):
 people2 = {"Nick": "A", "Olga": "B", "Mike": "FX", "Anna": "C"}
 formatted_grades2(people2)
 # _____________________________________________________________________________________________________________
+
+
 def formatted_numbers():
     num_list = []
     count = 0
@@ -1033,6 +1039,8 @@ def read_file(path):
 test = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
 print(read_file(test))
 # ________________________________________________________________________________________
+
+
 def write_and_get_employees(employee_list, path):
     base = []
     with open(path, 'w') as write_file:
@@ -1119,6 +1127,8 @@ test2 = 'Big chicken:active'
 way2 = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
 print(add_order(test2, way2))
 # ___________________________________________________________________________________________
+
+
 def navigate_clients(path, code):
     base = ''
     file = open(path, 'r')
@@ -1173,6 +1183,8 @@ test = 'C:/Users/Владыка/PycharmProjects/Functionality/money.txt'
 test2 = 'Big chicken4'
 print(get_ingredients(test, test2))
 # ________________________________________________________________________________________
+
+
 def encode_password(password):
     base = []
     for i in password.encode():
@@ -1184,6 +1196,8 @@ def encode_password(password):
 test = 'hardpassword123'
 print(encode_password(test))
 # ________________________________________________________
+
+
 def is_equal(utf_8_pass, utf_16_pass):
     utf_8_pass, utf_16_pass = utf_8_pass.decode('utf-8', 'ignore'), utf_16_pass.decode('utf-16', 'ignore')
     return utf_8_pass == utf_16_pass
@@ -1204,6 +1218,8 @@ test2 = 'Привет!'
 test2 = test2.encode()
 print(is_equal2(test2, test2))
 # _________________________________________________________________________
+
+
 def write_to_bin(path, user_info):
     base = []
     with open(path, 'wb') as file:
@@ -1227,3 +1243,215 @@ test = {'Andreiev': 'uyro18890D', 'Stivenson': 'oppjM13LL9e'}
 test1 = 'C:/Users/Владыка/PycharmProjects/Functionality/money.bin'
 print(write_to_bin(test1, test))
 # ____________________________________________________________________________________________
+# Поиск слова в строке
+
+
+def solve_riddle(riddle, word_length, start_letter, reverse=False):
+    base, result = [elem for elem in riddle], ''
+    if not reverse:
+        base.reverse()
+        base = ''.join(base)
+        for elem in base:
+            if elem == start_letter:
+                flag = base[base.index(elem): base.index(elem) + word_length]
+                result = result.join(flag)
+                return result
+    else:
+        base = ''.join(base)
+        for elem in base:
+            if elem == start_letter:
+                flag = base[base.index(elem): base.index(elem) + word_length]
+                result = result.join(flag)
+                return result
+
+
+test = 'mi1powrepret'
+lenght_str = 3
+start_let = 'r'
+print(solve_riddle(test, lenght_str, start_let, True))  # power
+# __________________________________________________________________________________________
+# Сглаживание списка
+
+
+def data_preparation(list_data):
+    base = []
+    for lists in list_data:
+        if len(lists) > 2:
+            lists.remove(min(lists))
+            lists.remove(max(lists))
+        for elements in lists:
+            base.append(elements)
+    base.sort(reverse=True)
+    return base
+
+
+test = [[1, 2, 3], [3, 4], [5, 6]]
+test2 = [[1, 2, 3, 0], [3], [5, 6, 1, 7, 2]]
+print(data_preparation(test))
+# _____________________________________________________________________
+
+
+def token_parser(s):
+    base = s.split()
+    result = []
+    for elem in base:
+        if elem in '0123456789':
+            result.append(elem)
+        else:
+            for i in elem:
+                result.append(i)
+    return result
+
+
+test = '2+ 34 -5 * 3'  # ['2', '+', '3', '4', '-', '5', '*', '3']
+print(token_parser(test))
+# _________________________________________________________________________
+
+
+def make_request(keys, values):
+    if len(keys) != len(values):
+        result = {}
+        return result
+    else:
+        result = dict(zip(keys, values))
+        return result
+
+
+keyss = ['first', 'second', 'third', 'fourth']
+valuess = ['value1', 'value2', 'value3', 'value4']
+print(make_request(keyss, valuess))  # {'first': 'value1', 'second': 'value2', ......}
+# ___________________________________________________________________________________________
+# Имитация набора текста на старом кнопочном телефоне (выводит числа клавиш)
+
+
+def sequence_buttons(string):
+    base = {
+        1: '.,?!:',
+        2: 'ABC',
+        3: 'DEF',
+        4: 'GHI',
+        5: 'JKL',
+        6: 'MNO',
+        7: 'PQRS',
+        8: 'TUV',
+        9: 'WXYZ',
+        0: ' '
+    }
+    result = []
+    for letter in string:
+        for key, value in base.items():
+            for item in value:
+                if letter.upper() == item:
+                    for _ in range(0, value.index(item) + 1):
+                        result.append(str(key))
+    result = ''.join(result)
+    return result
+
+
+test = 'Hello World!'
+print(sequence_buttons(test))
+# _________________________________________________________________________
+
+
+def file_operations(path, additional_info, start_pos, count_chars):
+    base = ''
+    with open(path, 'a') as file:
+        file.write(additional_info)
+    with open(path, 'r') as reading_file:
+        while reading_file.seek(start_pos) != count_chars:
+            base = base + reading_file.read(1)
+            start_pos += 1
+    return base
+
+
+test_string = 'Hello World'
+way = 'C:/Users/Владыка/PycharmProjects/Functionality/test_file.txt'
+start = 0
+count = len(test_string)
+print(file_operations(way, test_string, start, count))
+# _________________________________________________________________________________
+
+
+def get_employees_by_profession(path, profession):
+    with open(path, 'r') as fh:
+        line_list = fh.readlines()
+    result = list()
+    for line in line_list:
+        if line.find(profession) != -1:
+            result.append(line.removesuffix('\n').strip())
+    strr = ''.join(result)
+    return strr.replace(profession, '').strip()
+# ______________________________________________________________________________
+
+
+def to_indexed(start_file, end_file):
+    with open(start_file, 'r') as fh:
+        row_list = fh.readlines()
+    with open(end_file, 'w') as fh:
+        for item in row_list:
+            result = f'{row_list.index(item)}: ' + item
+            fh.write(result)
+# ________________________________________________________________________
+# Сглаживание списка
+
+
+def flatten(data):
+    if len(data) == 0:
+        return data
+    if isinstance(data[0], list):
+        return flatten(data[0]) + flatten(data[1:])
+    return data[:1] + flatten(data[1:])
+
+
+test = [1, 2, [3, 4, [5, 6]], 7]
+test2 = []
+print(flatten(test))
+# ___________________________________________________________________
+
+
+def encode(data, base=None):
+    if not data:
+        return []
+    if base is None:
+        base = []
+    idx = 0
+    next_idx = 1
+    for _ in data:
+        try:
+            if data[idx] == data[next_idx]:
+                idx += 1
+                next_idx += 1
+            else:
+                base.append(data[idx])
+                base.append(idx + 1)
+                if next_idx in base:
+                    encode(data[next_idx:], base)
+        except IndexError:
+            base.append(data[-1])
+            base.append(2)
+    return base[0:10]
+
+
+def decode(data, *args, idx=0, next_idx=1):
+    if not data:
+        return data
+    base = []
+    for _ in data:
+        try:
+            for _ in range(data[next_idx]):
+                base.append(data[idx])
+            idx += 2
+            next_idx += 2
+            decode(base, idx=idx, next_idx=next_idx)
+        except (TypeError, IndexError):
+            return base
+
+
+test = 'XXXZZXXYYYZZ'
+test3 = ["X", 3, "Z", 2, "X", 2, "Y", 3, "Z", 2]
+test2 = ["X", "X", "X", "Z", "Z", "X", "X", "Y", "Y", "Y", "Z", "Z"]
+test1 = ''
+test4 = []
+print(decode(test3))  # ["X", "X", "X", "Z", "Z", "X", "X", "Y", "Y", "Y", "Z", "Z"]
+print(encode(test))  # ["X", 3, "Z", 2, "X", 2, "Y", 3, "Z", 2]
+# _______________________________________________________________________________________________
