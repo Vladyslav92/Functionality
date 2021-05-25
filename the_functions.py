@@ -1455,3 +1455,128 @@ test4 = []
 print(decode(test3))  # ["X", "X", "X", "Z", "Z", "X", "X", "Y", "Y", "Y", "Z", "Z"]
 print(encode(test))  # ["X", 3, "Z", 2, "X", 2, "Y", 3, "Z", 2]
 # _______________________________________________________________________________________________
+from datetime import datetime
+
+
+def get_days_from_today(date):
+    base = date.split('-')
+    first = datetime(int(base[0]), int(base[1]), int(base[2]))
+    second = datetime.now()
+    result = second - first
+    return result.days
+
+
+test = '2020-10-09'
+print(get_days_from_today(test))
+# ________________________________________________________________________
+import random
+
+
+def random_winners(count, user_dict):
+    dict_keys = user_dict.keys()
+    random.shuffle(list(dict_keys))
+    return random.sample(list(dict_keys), k=count)
+
+
+print(random_winners(2, {"Oleg": 1362, "Anna": 3295, "Ira": 1234, "Boris": 3333}))
+# ______________________________________________________________________________________
+from decimal import Decimal, getcontext
+
+
+def decimal_average(number_list, signs_count):
+    getcontext().prec = signs_count
+    number_list = [Decimal(x) for x in number_list]
+    result = sum(number_list) / len(number_list)
+    return Decimal(result)
+
+
+test = [3, 5, 77, 23, 0.57]
+test1 = 6
+test2 = [31, 55, 177, 2300, 1.57]
+test3 = 9
+print(decimal_average(test2, test3))
+# ____________________________________________________________________________
+import math
+
+
+def cil_volume(h, r, x):
+    result = h * math.sin(math.radians(x)) * math.pi * r ** 2
+    return result
+
+
+print(cil_volume(10, 3, 5))  # Вычислить объем наклоненного цилиндра (h-высота r-радиус x-градус наклона)
+# _________________________________________________________________________________________________________
+import collections
+
+
+def to_named(tup):
+    Person = collections.namedtuple('Person', ['id', 'name', 'discount', 'city', 'age'])
+    person = Person(tup[0], tup[1], tup[2], tup[3], tup[4])
+    return person, person.discount
+
+
+test = (1985, "Nick", 15, "Kharkiv", 34)
+print(to_named(test))
+# ___________________________________________________________________________________________
+import collections
+
+
+def count_activity(clients_activity):
+    base = []
+    for lists in clients_activity:
+        for elements in lists:
+            base.append(elements)
+    res = collections.Counter(base)
+    return res.most_common(1)
+
+
+student_marks = [['Edvardson', 'Damriel', 'Mbape', 'Columb'], ['Edvardson', 'Mbape', 'Mbape']]
+print(count_activity(student_marks))
+# _________________________________________________________________________________________________
+from collections import defaultdict
+
+
+def group_clients(clients):
+    grouped_words = defaultdict(list)
+    for word in clients:
+        char = word[0:2]
+        grouped_words[char].append(word)
+    return grouped_words
+
+
+test = ['34345', '76788', '34654']
+print(group_clients(test))
+# _________________________________________________________
+from collections import deque
+
+
+def form_deque(clients_id, max_len):
+    obj = deque(maxlen=max_len)
+    count = 0
+    count1 = -1
+    for i in clients_id:
+        if i % 2 == 0:
+            obj.insert(count, i)
+            count += 1
+        else:
+            obj.insert(count1, i)
+    return obj
+
+
+test = [1233, 4566, 1234, 7877, 2]
+test1 = 5
+print(form_deque(test, test1))  # deque([4566, 1234, 7877, 2, 1233], maxlen=5)
+# _____________________________________________________________________________________
+def modify_lists(list_for_dict, pow_dict, list_for_list, add_num):
+    flag1 = {i: i ** pow_dict for i in list_for_dict}
+    flag2 = [i + add_num for i in list_for_list]
+    return flag1, flag2
+
+
+test = [1, 3]
+test1 = 2
+test3 = [3, 5]
+test4 = 7
+# modify_lists([1,3],2,[3,5],7)
+print(modify_lists(test, test1, test3, test4))  # ({1: 1, 3: 9}, [10, 12])
+# ________________________________________________________________________________
