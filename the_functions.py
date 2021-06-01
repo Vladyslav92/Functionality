@@ -1580,3 +1580,184 @@ test4 = 7
 # modify_lists([1,3],2,[3,5],7)
 print(modify_lists(test, test1, test3, test4))  # ({1: 1, 3: 9}, [10, 12])
 # ________________________________________________________________________________
+def get_grade(key):
+    grade = {"A": 5, "B": 5, "C": 4, "D": 3, "E": 3, "FX": 2, "F": 1}
+    return grade.get(key, None)
+
+
+def get_description(key):
+    description = {
+        "A": "отлично",
+        "B": "очень хорошо",
+        "C": "хорошо",
+        "D": "удовлетворительно",
+        "E": "достаточно",
+        "FX": "неудовлетворительно",
+        "F": "неудовлетворительно",
+    }
+    return description.get(key, None)
+
+
+def get_student_grade(option):
+    if option == 'grade':
+        return get_grade
+    elif option == 'description':
+        return get_description
+    else:
+        return None
+
+
+test = 'grade'
+test1 = 'description'
+test2 = None
+print(get_student_grade(test1))
+# ____________________________________________________________________________
+DEFAULT_DISCOUNT = 0.05
+
+
+def get_discount_price_customer(price, customer):
+    key = 'discount'
+    discount = customer.get('discount')
+    if customer.get(key) is None:
+        price = price * (1 - DEFAULT_DISCOUNT)
+        return price
+    else:
+        price = price * (1 - discount)
+        return price
+
+
+test = {"name": "Boris", "discount": 0.15}
+print(get_discount_price_customer(100, test))
+# ______________________________________________________________________________
+def caching_fibonacci():
+    cache = {0: 0, 1: 1}
+
+    def fibonacci(n):
+        result = cache.get(n)
+        if result is None:
+            result = fibonacci(n - 1) + fibonacci(n - 2)
+            cache[n] = result
+        return result
+
+    return fibonacci
+
+
+print(caching_fibonacci())
+# ________________________________________________________________________
+def discount_price(discount):
+    def result_function(number):
+        return number * (1 - discount)
+    return result_function
+
+
+cost_15 = discount_price(0.15)
+cost_10 = discount_price(0.10)
+cost_05 = discount_price(0.05)
+
+price = 100
+print(cost_15(price))
+print(cost_10(price))
+print(cost_05(price))
+# _________________________________________________________
+def format_phone_number(func):
+    def wrapper(value):
+        res = func(value)
+        if len(res) == 12:
+            return '+' + res.replace(' ', '').replace('(', '').replace(')', '')
+        elif len(res) == 10:
+            return '+38' + value.replace(' ', '').replace('(', '').replace(')', '')
+    return wrapper
+
+
+@format_phone_number
+def sanitize_phone_number(phone):
+    new_phone = (
+        phone.strip()
+            .removeprefix("+")
+            .replace("(", "")
+            .replace(")", "")
+            .replace("-", "")
+            .replace(" ", "")
+    )
+    return new_phone
+
+
+test = '(050)8889900'
+print(sanitize_phone_number(test))
+# ________________________________________________________________________________________________________
+import re
+
+
+def generator_numbers(string=''):
+    token = re.findall('\d+', string)
+    flag = [int(x) for x in token]
+    for i in flag:
+        yield i
+
+
+def sum_profit(string=''):
+    flag = generator_numbers(string)
+    base = 0
+    for i in flag:
+        base += i
+    return base
+
+
+string = 'The resulting profit was: from the southern possessions $ 100, from the northern colonies $500, ' \
+         'and the king gave $1000. '
+print(sum_profit(string))
+# ________________________________________________________________________________________________________
+def normal_name(list_name):
+    return list(map(lambda x: x.title(), list_name))
+
+
+test = ["dan", "jane", "steve", "mike"]
+print(normal_name(test))
+# ___________________________________________________________________
+def get_emails(list_contacts):
+    return list(map(lambda x: x['email'], list_contacts))
+
+
+test = [{"name": "Allen Raymond", "email": "nulla.ante@vestibul.co.uk", "phone": "(992) 914-3792", "favorite": False, },
+        {"name": "Allen Raymond", "email": "nulla.ante@vestibul.co.uk", "phone": "(992) 914-3792", "favorite": False, },
+        {"name": "Allen Raymond", "email": "nulla.ante@vestibul.co.uk", "phone": "(992) 914-3792", "favorite": False, }]
+print(get_emails(test))
+# ___________________________________________________________________________________
+def positive_values(list_payment):
+    return [i for i in filter(lambda x: x if x > 0 else None, list_payment)]
+
+
+test = [100, -3, 400, 35, -100]
+print(positive_values(test))
+# _____________________________________________________________________________
+def get_favorites(contacts):
+    return [i for i in filter(lambda x: x if x['favorite'] is True else None, contacts)]
+
+
+test = [{"name": "Allen Raymond", "email": "nulla.ante@vestibul.co.uk", "phone": "(992) 914-3792", "favorite": False, },
+        {"name": "Alien Ray", "email": "nulla.ante@vestibul.co.uk", "phone": "(992) 914-3792", "favorite": True, },
+        {"name": "Alleksey Raydovor", "email": "nulla.ante@vestibul.co.uk", "phone": "(992) 914-3792",
+         "favorite": True, }]
+print(get_favorites(test))
+# __________________________________________________________________________________________________
+from functools import reduce
+
+
+def sum_numbers(numbers):
+    return reduce((lambda x, y: x + y), numbers)
+
+
+test = [3, 4, 6, 9, 34, 12]
+print(sum_numbers(test))
+# ___________________________________________________
+from functools import reduce
+
+
+def amount_payment(payment):
+    res = [i for i in payment if i > 0]
+    return reduce(lambda x, y: x + y, res)
+
+
+test = [1, -3, 4]
+print(amount_payment(test))
+# __________________________________________________
