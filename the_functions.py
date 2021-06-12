@@ -1761,3 +1761,595 @@ def amount_payment(payment):
 test = [1, -3, 4]
 print(amount_payment(test))
 # __________________________________________________
+class Animal:
+    def __init__(self, nickname, weight):
+        self.nickname = nickname
+        self.weight = weight
+
+    def say(self):
+        pass
+
+
+class Cat(Animal):
+    def say(self):
+        return "Meow"
+
+
+class Dog(Animal):
+    def say(self):
+        return "Woof"
+
+
+class CatDog(Cat, Dog):
+    def say(self):
+        return super(CatDog, self).say()
+
+    def info(self):
+        return f'{self.nickname}-{self.weight}'
+
+
+class DogCat(Cat, Dog):
+    def say(self):
+        return super(Cat, self).say()
+
+    def info(self):
+        return f'{self.nickname}-{self.weight}'
+
+
+cat_dog = CatDog('Simon', 10)
+dog_cat = DogCat('Jef', 15)
+print(cat_dog.say())  # Meow
+print(dog_cat.say())  # Woof
+# _________________________________________________________________
+from collections import UserDict
+
+
+class LookUpKeyDict(UserDict):
+    def lookup_key(self, value):
+        base = []
+        for i in self.data:
+            if self.data[i] == value:
+                base.append(i)
+        return base
+
+
+gg = LookUpKeyDict()
+print(gg.lookup_key({'first': '1', 'second': '2', 'third': '3', 1: '4'}))
+# _____________________________________________________________________________________
+from collections import UserList
+
+
+class AmountPaymentList(UserList):
+    def amount_payment(self):
+        sum = 0
+        for value in self.data:
+            if value > 0:
+                sum = sum + value
+        return sum
+
+
+gg = AmountPaymentList()
+print(gg.amount_payment())
+# _________________________________________________________
+from collections import UserString
+
+
+class NumberString(UserString):
+    def number_count(self):
+        counter = 0
+        for i in self.data:
+            if i.isdigit():
+                counter += 1
+        return counter
+# ______________________________________________________
+class IDException(Exception):
+    pass
+
+
+def add_id(id_list, employee_id):
+    if '01' not in employee_id:
+        raise IDException
+    else:
+        id_list.append(employee_id)
+    return id_list
+# _____________________________________________
+class Animal:
+    def __init__(self, nickname, weight):
+        self.nickname = nickname
+        self.weight = weight
+
+    def say(self):
+        pass
+
+    def change_weight(self, weight):
+        self.weight = weight
+
+
+class Cat(Animal):
+    def say(self):
+        return "Meow"
+
+
+class CatDog:
+    def __init__(self, nickname, weight):
+        self.nickname = nickname
+        self.weight = weight
+
+    def change_weight(self, weight):
+        self.weight = weight
+
+    def say(self):
+        return super(Cat.say)
+# ______________________________________________________
+class Contacts:
+    current_id = 1
+
+    def __init__(self):
+        self.contacts = []
+
+    def list_contacts(self):
+        return self.contacts
+
+    def add_contacts(self, name, phone, email, favorite):
+        contact_dict = {}
+        contact_dict['id'] = Contacts.current_id
+        contact_dict['name'] = name
+        contact_dict['phone'] = phone
+        contact_dict['email'] = email
+        contact_dict['favorite'] = favorite
+        self.contacts.append(contact_dict)
+        Contacts.current_id += 1
+# ________________________________________________________________
+class Contacts:
+    current_id = 1
+
+    def __init__(self):
+        self.contacts = []
+
+    def list_contacts(self):
+        return self.contacts
+
+    def add_contacts(self, name, phone, email, favorite):
+        self.contacts.append(
+            {
+                "id": Contacts.current_id,
+                "name": name,
+                "phone": phone,
+                "email": email,
+                "favorite": favorite,
+            }
+        )
+        Contacts.current_id += 1
+
+    def get_contact_by_id(self, id):
+        for i in self.contacts:
+            if i.get('id') == id:
+                return i
+            else:
+                return None
+
+
+gg = Contacts()
+gg.add_contacts('Vlad', '098746', 'vs@ghf.com', 'Jedi')
+gg.add_contacts('Vlad', '098746', 'vs@ghf.com', 'Jedi')
+print(gg.get_contact_by_id())
+# _______________________________________________________________________
+class Contacts:
+    current_id = 1
+
+    def __init__(self):
+        self.contacts = []
+
+    def list_contacts(self):
+        return self.contacts
+
+    def add_contacts(self, name, phone, email, favorite):
+        self.contacts.append(
+            {
+                "id": Contacts.current_id,
+                "name": name,
+                "phone": phone,
+                "email": email,
+                "favorite": favorite,
+            }
+        )
+        Contacts.current_id += 1
+
+    def get_contact_by_id(self, id):
+        result = list(filter(lambda contact: contact.get("id") == id, self.contacts))
+        return result[0] if len(result) > 0 else None
+
+    def remove_contacts(self, id):
+        for i in self.contacts:
+            if i.get('id') == id:
+                self.contacts.remove(i)
+            else:
+                pass
+# _________________________________________________________________________
+class Customer:
+    def __init__(self, surname, id=1):
+        self.id = id
+        self.surname = surname
+
+    def __add__(self, other):
+        return self.id + other.id
+
+
+first = Customer("Vasya")
+second = Customer("Kolyan", 24)
+
+print(first + second)
+# _____________________________________________________
+class Customer:
+    def __init__(self, surname, id=1):
+        self.surname = surname
+        self.id = id
+
+    def __add__(self, b):
+        return self.id + b.id
+
+    def __repr__(self):
+        return f'Customer(\'{self.surname}\', {self.id})'
+
+    def __str__(self):
+        return f'customer id = {self.id} and surname is {self.surname}'
+
+
+person = Customer('Carlsson')
+print(person)
+# _______________________________________________________________________
+class Employees:
+    def __init__(self, surnames, group):
+        self.surnames = surnames
+        self.group = group
+        self.employees_dict = {}
+        count = range(0, len(surnames))
+        for i in range(len(surnames)):
+          self.employees_dict[surnames[i]] = count[i]
+
+    def __setitem__(self, key, value):
+        self.employees_dict[key] = value
+
+    def __getitem__(self, item):
+        return self.employees_dict[item]
+# ________________________________________________________
+class Employees:
+    def __init__(self, surnames, group):
+        self.employees_dict = {}
+        ids = range(0, len(surnames))
+        for iterator in range(0, len(surnames)):
+            self.employees_dict[surnames[iterator]] = ids[iterator]
+        self.group = group
+
+    def __setitem__(self, key, value):
+        self.employees_dict[key] = value
+
+    def __getitem__(self, item):
+        return self.employees_dict[item]
+
+    def __call__(self, item):
+        for key, val in self.employees_dict.items():
+            if item == val:
+                return [key]
+            elif not list(key):
+                return None
+            else:
+                continue
+# _______________________________________________________________
+class Client:
+    def __init__(self, client_list, discount):
+        self.client_list = client_list
+        self.discount = discount
+        self.current_client = 0
+
+    def __next__(self):
+        try:
+            item = self.client_list[self.current_client]
+        except IndexError:
+            raise StopIteration
+        self.current_client += 1
+        return item
+
+    def __iter__(self):
+        return self
+
+
+ust = Client(["Alex", "Dima"], 0.5)
+
+result_list1 = []
+for i in ust:
+    result_list1.append(i)
+
+result_list2 = []
+for i in ust:
+    result_list2.append(i)
+
+print(result_list1)
+print(result_list2)
+# ____________________________________________________
+class Customer:
+    def __init__(self, surname, id=1):
+        self.__surname = surname
+        self.__id = id
+
+    def __add__(self, b):
+        return self.id + b.id
+
+    def __repr__(self):
+        return f'Customer("{self.surname}", {self.id})'
+
+    def __str__(self):
+        return f'customer id = {self.id} and surname is {self.surname}'
+
+    @property
+    def surname(self):
+        return self.__surname
+
+    @surname.setter
+    def set_surname(self, surname):
+        if len(surname) > 0:
+            self.__surname = surname
+
+    @property
+    def id(self):
+        return self.__id
+
+    @id.setter
+    def set_id(self, id):
+        if id > 0:
+            self.__id = id
+# ________________________________________________________
+class Customer:
+    def __init__(self, surname, id=1):
+        self.__surname = surname
+        self.__id = id
+
+    def __add__(self, b):
+        return self.id + b.id
+
+    def __repr__(self):
+        return f'Customer("{self.surname}", {self.id})'
+
+    def __str__(self):
+        return f'customer id = {self.id} and surname is {self.surname}'
+
+    @property
+    def surname(self):
+        return self.__surname
+
+    @surname.setter
+    def set_surname(self, surname):
+        if len(surname) > 0:
+            self.__surname = surname
+
+    @property
+    def id(self):
+        return self.__id
+
+    @id.setter
+    def set_id(self, id):
+        if id > 0:
+            self.__id = id
+
+    def __eq__(self, other):
+        return self.__id == other.id and self.__surname == other.surname
+
+    def __ne__(self, other):
+        return self.__id != other.id or self.__surname != other.surname
+
+    def __gt__(self, other):
+        return self.__id > other.id
+
+    def __lt__(self, other):
+        return self.__id < other.id
+
+    def __ge__(self, other):
+        return self.__id >= other.id and self.__surname >= other.surname
+
+    def __le__(self, other):
+        return self.__id <= other.id and self.__surname <= other.surname
+# ____________________________________________________________________________________
+class FoodComponent:
+    def __init__(self, product_names, weight, price):
+        self.product_names = product_names
+        self.weight = weight
+        self.price = price
+
+    def __str__(self):
+        return f'Product {str(self.product_names)}, weight = {self.weight}, price = {self.price}'
+
+    def __add__(self, other):
+        self.product_names += other.product_names
+        self.weight += other.weight
+        self.price += other.price
+        return self
+# _________________________________________________________________
+import pickle
+
+
+class Customer:
+    def __init__(self, surname, id):
+        self.surname = surname
+        self.id = id
+
+    def __eq__(self, other):
+        if self.surname == other.surname and self.id == other.id:
+            return True
+        return False
+
+
+def write_object(customer):
+    return pickle.dumps(customer)
+
+
+def write_to_file(customer, path):
+    with open(path, 'wb') as fh:
+        pickle.dump(customer, fh)
+# ________________________________________________
+import json
+
+
+def write_object(customer):
+    return json.dumps(customer)
+
+
+def write_to_file(customer, path):
+    with open(path, "w") as fh:
+        json.dump(customer, fh)
+
+
+test = [{'id': 312, 'name': 'Alex'}, {'id':  132, 'name': 'George'}]
+test_path = 'C://test/test/'
+print(write_object(test))
+print(write_to_file(test, test_path))
+# _____________________________________________________
+import csv
+
+
+def write_customers_to_csv(customers, file_name):
+    keys = customers[0].keys()
+    with open(file_name, 'w') as fh:
+        dict_writer = csv.DictWriter(fh, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(customers)
+
+
+test = [{'id': 312, 'name': 'Alex'}, {'id': 132, 'name': 'George'}]
+name = 'test.csv'
+print(write_customers_to_csv(test, name))
+# _______________________________________________________
+class Customer:
+    def __init__(self, surname, id):
+        self.surname = surname
+        self.id = id
+
+    def __eq__(self, other):
+        if self.surname == other.surname and self.id == other.id:
+            return True
+        return False
+
+    def __getstate__(self):
+        attributes = self.__dict__.copy()
+        attributes['id'] *= 4
+        return attributes
+# _________________________________________________
+class Customer:
+    def __init__(self, surname, id):
+        self.surname = surname
+        self.id = id
+
+    def __eq__(self, other):
+        if self.surname == other.surname and self.id == other.id:
+            return True
+        return False
+
+    def __getstate__(self):
+        attributes = self.__dict__.copy()
+        attributes['id'] *= 4
+        return attributes
+
+    def __setstate__(self, state):
+        attributes = self.__dict__.copy()
+        attributes['id'] = 4
+        return attributes
+# ____________________________________________________________
+import copy
+
+
+class Customer:
+    def __init__(self, surname, id):
+        self.surname = surname
+        self.id = id
+
+    def __eq__(self, other):
+        if self.surname == other.surname and self.id == other.id:
+            return True
+        return False
+
+    def __getstate__(self):
+        attributes = self.__dict__.copy()
+        attributes['id'] *= 4
+        return attributes
+
+    def __setstate__(self, state):
+        self.__dict__ = state
+        self.id /= 4
+
+
+def create_incremented_customer(customer):
+    copy_list = copy.copy(customer)
+    copy_list.id += 1
+    return copy_list
+# ________________________________________________________
+import copy
+
+
+class Customer:
+    def __init__(self, surname, id, attributes):
+        self.surname = surname
+        self.id = id
+        self.attributes = attributes
+
+    def __eq__(self, other):
+        if self.surname == other.surname and self.id == other.id:
+            return True
+        return False
+
+    def __getstate__(self):
+        attributes = self.__dict__.copy()
+        attributes['id'] *= 4
+        return attributes
+
+    def __setstate__(self, state):
+        self.__dict__ = state
+        self.id /= 4
+
+
+def create_incremented_customer(customer):
+    copy_list = copy.deepcopy(customer)
+    copy_list.id += 1
+    return copy_list
+# ___________________________________________________________
+from copy import deepcopy, copy
+
+
+class Customer:
+    def __init__(self, surname, id, attributes):
+        self.surname = surname
+        self.id = id
+        self.attributes = attributes
+
+    def __eq__(self, other):
+        if self.surname == other.surname and self.id == other.id:
+            return True
+        return False
+
+    def __getstate__(self):
+        attributes = self.__dict__.copy()
+        attributes['id'] *= 4
+        return attributes
+
+    def __setstate__(self, state):
+        self.__dict__ = state
+        self.id /= 4
+
+    def __copy__(self):
+        copy_obj = Customer(None, None, None)
+        copy_obj.surname = self.surname
+        copy_obj.id = self.id
+        copy_obj.attributes = self.attributes
+        return copy_obj
+
+    def __deepcopy__(self):
+        copy_obj = Customer(None, None, None)
+        copy_obj.surname = deepcopy(self.surname)
+        copy_obj.id = deepcopy(self.id)
+        copy_obj.attributes = deepcopy(self.attributes)
+        return copy_obj
+
+
+def create_incremented_customer(customer):
+    new_customer = customer.__deepcopy__()
+    new_customer.id += 1
+    return new_customer
+# ____________________________________________________________________
